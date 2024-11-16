@@ -58,6 +58,61 @@ export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewP
     }
   };
 
+  const handleBuy = async () => {
+    try {
+      if (!window.ethereum) {
+        alert("Please install MetaMask to purchase access!");
+        return;
+      }
+
+      // Switch to Akave network
+      // const chainId = "0x134A3" // 78963 in hex
+      // try {
+      //   await window.ethereum.request({
+      //     method: 'wallet_switchEthereumChain',
+      //     params: [{ chainId }],
+      //   });
+      // } catch (switchError: any) {
+      //   if (switchError.code === 4902) {
+      //     try {
+      //       await window.ethereum.request({
+      //         method: 'wallet_addEthereumChain',
+      //         params: [{
+      //           chainId,
+      //           chainName: 'Akave Network',
+      //           rpcUrls: ['https://node1-asia.ava.akave.ai/ext/bc/tLqcnkJkZ1DgyLyWmborZK9d7NmMj6YCzCFmf9d9oQEd2fHon/rpc'],
+      //           nativeCurrency: {
+      //             name: 'AKAVE',
+      //             symbol: 'AKAVE',
+      //             decimals: 18
+      //           },
+      //         }],
+      //       });
+      //     } catch (addError) {
+      //       throw addError;
+      //     }
+      //   }
+      //   throw switchError;
+      // }
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+      // Assuming the contract has a purchaseAccess function that requires payment
+      const price = ethers.parseEther("0.25");
+      const tx = await contract.payForAccess(connectedAddress, file.RootCID, { value: price });
+      
+      // Wait for transaction to be mined
+      await tx.wait();
+      
+      alert("Successfully purchased access to the file!");
+    } catch (error) {
+      console.error("Error purchasing access:", error);
+      console.log("Error purchasing access. Please try again.");
+    }
+  };
+
   return (
     <div className="border-b border-gray-200 last:border-none hover:bg-gray-50">
       <div className="p-4 flex items-center justify-between">
@@ -80,7 +135,7 @@ export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewP
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => {console.log("buy")}}
+            onClick={handleBuy}
             className="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-2 border-black btn-sm"
             title="Buy file"
           >
