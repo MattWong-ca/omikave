@@ -82,13 +82,13 @@ export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewP
 
       {isOpen && (
         <div className="p-4 bg-gray-50 border-t border-gray-200 flex flex-col gap-4">
-          <DocEndpoint
+          {/* <DocEndpoint
             endpoint={`/buckets/[bucketName]/files/[fileName]/download`}
             method="GET"
             implementationFile="/api/akave/bucket/[bucketName]/files/[fileName]/route.ts"
             description="Download a file from the specified bucket"
             docsUrl="https://hackathon-docs.akave.ai/js-docker-example-code#id-4.-download-a-file"
-          />
+          /> */}
           <div className="grid gap-2 text-sm bg-white p-4 rounded-lg border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex justify-between">
               <span className="font-medium text-gray-900">Created:</span>

@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
       },
     },
   },
-  defaultNetwork: "calibration",
+  defaultNetwork: "akaveFuji",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
@@ -67,6 +67,10 @@ const config: HardhatUserConfig = {
     },
     optimismSepolia: {
       url: `https://opt-sepolia.g.alchemy.com/v2/${providerApiKey}`,
+      accounts: [deployerPrivateKey],
+    },
+    akaveFuji: {
+      url: "https://node1-eu.ava.akave.ai/ext/bc/tLqcnkJkZ1DgyLyWmborZK9d7NmMj6YCzCFmf9d9oQEd2fHon/rpc",
       accounts: [deployerPrivateKey],
     },
   },

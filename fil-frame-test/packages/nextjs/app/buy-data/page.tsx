@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { PlusIcon, FolderIcon, CalendarIcon, ArchiveBoxIcon } from "@heroicons/react/24/outline";
-import { fetchBuckets, createBucket, uploadFile, type Bucket, type File } from "./calls";
-import { formatDate } from "./utils";
-import { FilePreview } from "./components/FilePreview";
-import { DocEndpoint } from "./components/doc-component";
+import { fetchBuckets, createBucket, uploadFile, type Bucket, type File } from "../buckets/calls";
+import { formatDate } from "../buckets/utils";
+import { FilePreview } from "../buckets/components/FilePreview";
 
 export default function BucketsPage() {
   const [buckets, setBuckets] = useState<Bucket[]>([]);
@@ -118,38 +117,14 @@ export default function BucketsPage() {
     <div className="container mx-auto p-8">
       {/* Header Section */}
       <div className="flex flex-col mb-8 border-b-2 border-black pb-4">
-        <h1 className="text-4xl font-bold mb-4">Sell</h1>
-        <div className="flex justify-between items-center">
-          {/* <DocEndpoint
-            method="GET"
-            endpoint="/api/buckets"
-            implementationFile="/app/api/buckets/route.ts"
-            description="List all buckets"
-            docsUrl="https://hackathon-docs.akave.ai/js-docker-example-code#id-2.-list-buckets"
-          /> */}
-          <button
-            onClick={() => setShowCreateForm(oldValue => !oldValue)}
-            className="btn bg-black hover:bg-gray-800 text-white border-2 border-black"
-          >
-            <PlusIcon className="h-5 w-5 mr-2" />
-            Create Bucket
-          </button>
-        </div>
+        <h1 className="text-4xl font-bold mb-4">Buy</h1>
       </div>
 
-      {/* Create Bucket Form */}
       {showCreateForm && (
         <div className="mb-8 p-6 bg-white rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="flex justify-between items-center mb-4">
             <div>
               <h2 className="text-2xl font-bold text-black">Create New Bucket</h2>
-              {/* <DocEndpoint
-                method="POST"
-                endpoint="/api/buckets/create"
-                implementationFile="/app/api/buckets/create/route.ts"
-                description="Creates a new bucket with specified parameters. Returns the bucket ID and access details."
-                docsUrl="https://hackathon-docs.akave.ai/js-docker-example-code#id-1.-create-a-bucket"
-              /> */}
             </div>
             <button onClick={() => setShowCreateForm(false)} className="btn btn-ghost btn-sm hover:bg-gray-100">
               ×
@@ -211,15 +186,6 @@ export default function BucketsPage() {
                       <span className="mx-2">•</span>
                       <span>{bucket.files.length} files</span>
                     </div>
-                    {/* {index === 0 && (
-                      <DocEndpoint
-                        endpoint={`/buckets/[bucketName]/files`}
-                        method="GET"
-                        implementationFile="/api/akave/bucket/[bucketName]/files/route.ts"
-                        description="List files in bucket"
-                        docsUrl="https://hackathon-docs.akave.ai/js-docker-example-code#id-1.-list-files-in-a-bucket"
-                      />
-                    )} */}
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -235,17 +201,8 @@ export default function BucketsPage() {
               {expandedBucket === bucket.Name && (
                 <div className="border-t-2 border-black">
                   {/* File Upload Section */}
-                  <div className="p-4 bg-gray-50">
+                  <div>
                     <div className="flex gap-4">
-                      <div className="flex-1">
-                        <input
-                          type="file"
-                          multiple
-                          onChange={e => handleFileSelect(e, bucket.Name)}
-                          className="file-input w-full border-2 border-black bg-white transition-colors text-gray-900 disabled:bg-gray-50 disabled:text-gray-500"
-                          disabled={isLoading}
-                        />
-                      </div>
                       {selectedFiles.length > 0 && (
                         <button
                           onClick={() => handleUploadFiles(bucket.Name)}
@@ -264,15 +221,8 @@ export default function BucketsPage() {
                         </button>
                       )}
                     </div>
-                    <div className="mb-2">
-                      {/* <DocEndpoint
-                        endpoint={`/buckets/[bucketName]/files`}
-                        method="POST"
-                        implementationFile="/api/akave/bucket/[bucketName]/files/route.ts"
-                        description="Upload files to bucket"
-                        docsUrl="https://hackathon-docs.akave.ai/js-docker-example-code#id-3.-upload-a-file"
-                      /> */}
-                    </div>
+                    {/* <div className="mb-2">
+                    </div> */}
                     {/* Selected Files List */}
                     {selectedFiles.length > 0 && (
                       <div className="mt-4 bg-white rounded-lg border-2 border-black p-2">

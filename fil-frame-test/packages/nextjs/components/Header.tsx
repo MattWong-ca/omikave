@@ -21,7 +21,12 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/",
   },
   {
-    label: "Buckets",
+    label: "Buy",
+    href: "/buy-data",
+    icon: <Image src="/akave-black.svg" alt="akave-logo" width={24} height={24} />,
+  },
+  {
+    label: "Sell",
     href: "/buckets",
     icon: <Image src="/akave-black.svg" alt="akave-logo" width={24} height={24} />,
   },
