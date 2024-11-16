@@ -45,16 +45,17 @@ export default function Home() {
             </div>
             <pre className="mt-2 bg-gray-100 p-2 rounded">
               {webhook.data?.segments && Array.isArray(webhook.data.segments) ? 
-                webhook.data.segments.reduce((acc, segment, index, array) => {
-                  const prevSpeaker = index > 0 ? array[index - 1]?.speaker : segment.speaker;
-                  
-                  if (prevSpeaker === segment.speaker) {
-                    return acc + ' ' + segment.text;
-                  } else {
-                    const prefix = index === 0 ? '' : '\n';
-                    return acc + prefix + `${segment.speaker}: ${segment.text}`;
-                  }
-                }, '').trim()
+                Object.entries(
+                  webhook.data.segments.reduce((acc, segment) => {
+                    acc[segment.speaker] = acc[segment.speaker] || [];
+                    acc[segment.speaker].push(segment.text);
+                    return acc;
+                  }, {} as Record<string, string[]>)
+                )
+                .map(([speaker, texts]) => 
+                  `${speaker}:\n${(texts as string[]).join(' ')}`
+                )
+                .join('\n\n')
                 : null
               }
             </pre>
