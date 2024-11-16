@@ -3,28 +3,28 @@ pragma solidity ^0.8.23;
 
 contract Gateway {
     // State variables
-    mapping(address => bool) private verifiedAddresses;
-    uint256 public accessFee;
-
-    // Events
-    event AddressVerified(address indexed user);
-
-    // Constructor to set the initial access fee
-    constructor(uint256 _accessFee) {
-        accessFee = _accessFee;
-    }
+    mapping(address => mapping(bytes32 => bool)) private permissions;
+    uint256 public accessFee = 0.25 ether;
 
     // Function to pay for access
-    function payForAccess() external payable {
+    function payForAccess(address user, string memory cid) external payable {
         require(msg.value >= accessFee, "Insufficient payment");
-        require(!verifiedAddresses[msg.sender], "Address already verified");
-        
-        verifiedAddresses[msg.sender] = true;
-        emit AddressVerified(msg.sender);
+        bytes32 cidHash = keccak256(abi.encodePacked(cid));
+        permissions[user][cidHash] = true;
+    }
+
+    // Revoke access to a CID for a specific address
+    function revokeAccess(address user, string memory cid) public {
+        bytes32 cidHash = keccak256(abi.encodePacked(cid));
+        permissions[user][cidHash] = false;
     }
 
     // Function to check if an address is verified
-    function isVerified(address _address) external view returns (bool) {
-        return verifiedAddresses[_address];
+    function isVerified(
+        address user,
+        string memory cid
+    ) external view returns (bool) {
+        bytes32 cidHash = keccak256(abi.encodePacked(cid));
+        return permissions[user][cidHash];
     }
 }

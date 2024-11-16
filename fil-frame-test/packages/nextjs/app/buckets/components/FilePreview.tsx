@@ -11,13 +11,11 @@ interface FilePreviewProps {
   onToggle: () => void;
 }
 
-const backendUrl = process.env.NEXT_PUBLIC_AKAVE_BACKEND_URL;
-
 export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewProps) => {
   const [imageError, setImageError] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
   const fileInfo = getFileTypeInfo(file.Name);
-  const fileUrl = `${backendUrl}/buckets/${bucketName}/files/${file.Name}/download`;
+  const fileUrl = `http://localhost:8000/buckets/${bucketName}/files/${file.Name}/download`;
 
   const handleShare = async () => {
     try {
@@ -50,23 +48,28 @@ export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewP
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="relative">
-            <button
-              onClick={handleShare}
-              className="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-2 border-black btn-sm"
-              title="Copy download link"
-            >
-              <ShareIcon className="h-4 w-4" />
-            </button>
-            {showCopied && (
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-black rounded shadow-lg">
-                Copied!
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
-                  <div className="border-x-4 border-x-transparent border-t-4 border-t-black"></div>
-                </div>
+          <button
+            onClick={() => {console.log("buy")}}
+            className="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-2 border-black btn-sm"
+            title="Buy file"
+          >
+            Buy
+          </button>
+          <button
+            onClick={handleShare}
+            className="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-2 border-black btn-sm"
+            title="Copy download link"
+          >
+            <ShareIcon className="h-4 w-4" />
+          </button>
+          {showCopied && (
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-black rounded shadow-lg">
+              Copied!
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
+                <div className="border-x-4 border-x-transparent border-t-4 border-t-black"></div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           <a
             href={fileUrl}

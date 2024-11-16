@@ -7,7 +7,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
  *
  * @param hre HardhatRuntimeEnvironment object.
  */
-const deployDealInfo: DeployFunction = async function (
+const gateway: DeployFunction = async function (
   hre: HardhatRuntimeEnvironment
 ) {
   /*
@@ -25,7 +25,7 @@ const deployDealInfo: DeployFunction = async function (
 
   const { deploy } = hre.deployments;
 
-  const DealInfo = await deploy("DealInfo", {
+  const Gateway = await deploy("Gateway", {
     from: deployer,
     // Contract constructor arguments
     args: [],
@@ -35,8 +35,8 @@ const deployDealInfo: DeployFunction = async function (
     autoMine: true,
   });
 
-  console.log("🚀 DealInfo deployed at: ", DealInfo.address);
-  const DealInfoAddress = DealInfo.address;
+  console.log("🚀 Gateway contract deployed at: ", Gateway.address);
+  const ContractAddress = Gateway.address;
 
   // Check if the --verify flag is present
   const shouldVerify = process.env.VERIFY === "true";
@@ -54,19 +54,19 @@ const deployDealInfo: DeployFunction = async function (
     if (filecoinNetworks.includes(hre.network.name)) {
       // Verify the contract on the filfox explorer
       await hre.run("verify-contract", {
-        contractName: "DealInfo",
+        contractName: "Gateway",
       });
     } else {
       await hre.run("verify:verify", {
-        address: DealInfoAddress,
+        address: ContractAddress,
         constructorArguments: [deployer],
       });
     }
   }
 };
 
-export default deployDealInfo;
+export default gateway;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags DealInfo
-deployDealInfo.tags = ["DealInfo"];
+gateway.tags = ["Gateway"];
