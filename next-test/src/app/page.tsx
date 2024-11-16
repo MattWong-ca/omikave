@@ -75,6 +75,7 @@ export default function Home() {
                   if (speakerSegments.some(text => 
                     text.toLowerCase().includes('save the last 3 minutes') ||
                     text.toLowerCase().includes('save the last three minutes'))) {
+                      console.log('Trigger phrase found');
                     handleScreenCapture();
                   }
                   
