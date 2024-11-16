@@ -47,9 +47,12 @@ export default function Home() {
               {webhook.data?.segments && Array.isArray(webhook.data.segments) ? 
                 webhook.data.segments.reduce((acc, segment, index, array) => {
                   const prevSpeaker = index > 0 ? array[index - 1].speaker : null;
-                  const text = `${segment.speaker}: ${segment.text}`;
                   
-                  return acc + (prevSpeaker === segment.speaker ? ' ' : '\n') + text;
+                  if (prevSpeaker === segment.speaker) {
+                    return acc + ' ' + segment.text;
+                  }
+                  
+                  return acc + (index === 0 ? '' : '\n') + `${segment.speaker}: ${segment.text}`;
                 }, '').trim()
                 : null
               }
