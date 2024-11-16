@@ -44,7 +44,7 @@ export default function Home() {
               {speakerName}
             </div>
             <pre className="mt-2 bg-gray-100 p-2 rounded">
-              {webhooks.flatMap(webhook => 
+              {[...webhooks].reverse().flatMap(webhook => 
                 webhook.data?.segments && Array.isArray(webhook.data.segments) ?
                   webhook.data.segments
                     .filter((segment: { speaker: string }) => segment.speaker === speakerName)
