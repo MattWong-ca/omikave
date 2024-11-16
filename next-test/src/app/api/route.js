@@ -3,7 +3,7 @@ export async function POST(req) {
     const data = await req.json();
     console.log("Webhook Data:", data);
 
-    return new Response(JSON.stringify({ message: "Webhook received successfully!" }), {
+    return new Response(JSON.stringify({ message: "Testing!" }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
