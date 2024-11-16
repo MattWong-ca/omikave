@@ -56,7 +56,16 @@ export default function Home() {
 
   return (
     <div className="p-8 min-h-screen" style={{ backgroundColor: '#0E76FD' }}>
-      <h1 className="text-4xl font-bold mb-4 text-center text-white">Omi Transcripts</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-4xl font-bold text-center text-white">Omi Transcripts</h1>
+        <button 
+          onClick={handleScreenCapture}
+          className="bg-white text-blue-600 px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition-colors"
+        >
+          📸 Save Screenshot
+        </button>
+      </div>
+      
       <div className="space-y-4">
         {['SPEAKER_01', 'SPEAKER_02', 'SPEAKER_03'].map((speakerName) => (
           <div key={speakerName} className="border-2 border-black p-4 rounded-xl shadow bg-white">
@@ -70,14 +79,6 @@ export default function Home() {
                   const speakerSegments = segments
                     .filter((segment: { speaker: string }) => segment.speaker === speakerName)
                     .map((segment: { text: string }) => segment.text);
-                  
-                  // Check for trigger phrase
-                  if (speakerSegments.some(text => 
-                    text.toLowerCase().includes('save the last 3 minutes') ||
-                    text.toLowerCase().includes('save the last three minutes'))) {
-                      console.log('Trigger phrase found');
-                    handleScreenCapture();
-                  }
                   
                   return speakerSegments;
                 }
