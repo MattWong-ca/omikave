@@ -38,26 +38,19 @@ export default function Home() {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Webhook History</h1>
       <div className="space-y-4">
-        {webhooks.map((webhook, index) => (
-          <div key={index} className="border p-4 rounded shadow">
+        {['Speaker 1', 'Speaker 2', 'Speaker 3'].map((speakerName) => (
+          <div key={speakerName} className="border p-4 rounded shadow">
             <div className="font-bold text-sm text-gray-500">
-              {/* {new Date(webhook.timestamp).toLocaleString()} */}
+              {speakerName}
             </div>
             <pre className="mt-2 bg-gray-100 p-2 rounded">
-              {webhook.data?.segments && Array.isArray(webhook.data.segments) ? 
-                Object.entries(
-                  webhook.data.segments.reduce((acc, segment) => {
-                    acc[segment.speaker] = acc[segment.speaker] || [];
-                    acc[segment.speaker].push(segment.text);
-                    return acc;
-                  }, {} as Record<string, string[]>)
-                )
-                .map(([speaker, texts]) => 
-                  `${speaker}:\n${(texts as string[]).join(' ')}`
-                )
-                .join('\n\n')
-                : null
-              }
+              {webhooks.flatMap(webhook => 
+                webhook.data?.segments && Array.isArray(webhook.data.segments) ?
+                  webhook.data.segments
+                    .filter((segment: { speaker: string }) => segment.speaker === speakerName)
+                    .map((segment: { text: string }) => segment.text)
+                : []
+              ).join(' ')}
             </pre>
           </div>
         ))}
