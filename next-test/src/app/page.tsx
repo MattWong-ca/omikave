@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import html2canvas from 'html2canvas';
 
 interface Webhook {
   data: {
@@ -11,6 +12,25 @@ interface Webhook {
 export default function Home() {
 
   const [webhooks, setWebhooks] = useState<Webhook[]>([]);
+
+  const handleScreenCapture = async () => {
+    try {
+      const element = document.documentElement;
+      const canvas = await html2canvas(element);
+      
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+      
+      const url = window.URL.createObjectURL(blob as Blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `transcript-${new Date().toISOString()}.png`;
+      link.click();
+      
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error capturing screen:', error);
+    }
+  };
 
   // Fetch webhooks on load and every 5 seconds
   useEffect(() => {
@@ -44,13 +64,24 @@ export default function Home() {
               {speakerName}
             </div>
             <pre className="mt-2 bg-gray-100 p-2 rounded whitespace-pre-wrap break-words">
-              {[...webhooks].reverse().flatMap(webhook => 
-                webhook.data?.segments && Array.isArray(webhook.data.segments) ?
-                  webhook.data.segments
+              {[...webhooks].reverse().flatMap(webhook => {
+                const segments = webhook.data?.segments;
+                if (segments && Array.isArray(segments)) {
+                  const speakerSegments = segments
                     .filter((segment: { speaker: string }) => segment.speaker === speakerName)
-                    .map((segment: { text: string }) => segment.text)
-                : []
-              ).join(' ')}
+                    .map((segment: { text: string }) => segment.text);
+                  
+                  // Check for trigger phrase
+                  if (speakerSegments.some(text => 
+                    text.toLowerCase().includes('save the last 3 minutes') ||
+                    text.toLowerCase().includes('save the last three minutes'))) {
+                    handleScreenCapture();
+                  }
+                  
+                  return speakerSegments;
+                }
+                return [];
+              }).join(' ')}
             </pre>
           </div>
         ))}
