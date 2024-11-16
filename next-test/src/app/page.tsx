@@ -44,15 +44,20 @@ export default function Home() {
               {/* {new Date(webhook.timestamp).toLocaleString()} */}
             </div>
             <pre className="mt-2 bg-gray-100 p-2 rounded">
+              {console.log(webhook.data)}
               {webhook.data?.segments && Array.isArray(webhook.data.segments) ? 
                 webhook.data.segments.reduce((acc, segment, index, array) => {
                   const prevSpeaker = index > 0 ? array[index - 1].speaker : null;
                   
+                  // Debug log
+                  console.log('Previous:', prevSpeaker, 'Current:', segment.speaker, 'Equal:', prevSpeaker === segment.speaker);
+                  
                   if (prevSpeaker === segment.speaker) {
                     return acc + ' ' + segment.text;
+                  } else {
+                    const prefix = index === 0 ? '' : '\n';
+                    return acc + prefix + `${segment.speaker}: ${segment.text}`;
                   }
-                  
-                  return acc + (index === 0 ? '' : '\n') + `${segment.speaker}: ${segment.text}`;
                 }, '').trim()
                 : null
               }
