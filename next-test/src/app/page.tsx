@@ -2,7 +2,9 @@
 import { useState, useEffect } from 'react';
 
 interface Webhook {
-  data: unknown;
+  data: {
+    segments?: unknown;
+  };
   timestamp: string;
 }
 
@@ -42,7 +44,7 @@ export default function Home() {
               {/* {new Date(webhook.timestamp).toLocaleString()} */}
             </div>
             <pre className="mt-2 bg-gray-100 p-2 rounded">
-              {JSON.stringify(webhook.data, null, 2)}
+              {JSON.stringify(webhook.data?.segments, null, 2)}
             </pre>
           </div>
         ))}
