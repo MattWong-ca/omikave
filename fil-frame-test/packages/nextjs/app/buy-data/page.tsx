@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { PlusIcon, FolderIcon, CalendarIcon, ArchiveBoxIcon } from "@heroicons/react/24/outline";
+import { CalendarIcon } from "@heroicons/react/24/outline";
 import { fetchBuckets, createBucket, uploadFile, type Bucket, type File } from "../buckets/calls";
 import { formatDate } from "../buckets/utils";
 import { FilePreview } from "../buckets/components/FilePreview";
@@ -37,11 +37,6 @@ export default function BucketsPage() {
       handleFetchBuckets();
     }
     setIsLoading(false);
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, bucketName: string) => {
-    const files = Array.from(e.target.files || []);
-    setSelectedFiles(prev => [...prev, ...files] as File[]);
   };
 
   const handleRemoveFile = (fileName: string) => {

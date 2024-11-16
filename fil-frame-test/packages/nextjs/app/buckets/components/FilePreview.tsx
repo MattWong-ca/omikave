@@ -2,7 +2,9 @@ import { useState } from "react";
 import { File } from "../calls";
 import { formatDate, formatFileSize, getFileTypeInfo } from "../utils";
 import { ChevronDownIcon, ChevronRightIcon, ArrowDownTrayIcon, ShareIcon } from "@heroicons/react/24/outline";
-import { DocEndpoint } from "./doc-component";
+import { ethers } from "ethers";
+import deployedContracts from "../../../contracts/deployedContracts";
+import { useAccount } from "wagmi";
 
 interface FilePreviewProps {
   file: File;
@@ -12,7 +14,9 @@ interface FilePreviewProps {
 }
 
 export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewProps) => {
-  const [imageError, setImageError] = useState(false);
+  const { address: connectedAddress } = useAccount();
+  const contractAddress = deployedContracts[78963].Gateway.address;
+  const contractABI = deployedContracts[78963].Gateway.abi;
   const [showCopied, setShowCopied] = useState(false);
   const fileInfo = getFileTypeInfo(file.Name);
   const fileUrl = `http://localhost:8000/buckets/${bucketName}/files/${file.Name}/download`;
@@ -24,6 +28,33 @@ export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewP
       setTimeout(() => setShowCopied(false), 2000); // Hide after 2 seconds
     } catch (err) {
       console.error('Failed to copy:', err);
+    }
+  };
+
+  const handleDownload = async (e: React.MouseEvent) => {
+    console.log(connectedAddress);
+    try {
+      if (!window.ethereum) {
+        alert("Please install MetaMask to download files!");
+        return;
+      }
+
+      const provider = new ethers.JsonRpcProvider(
+        "https://node1-asia.ava.akave.ai/ext/bc/tLqcnkJkZ1DgyLyWmborZK9d7NmMj6YCzCFmf9d9oQEd2fHon/rpc",
+      );
+      // const signer = await provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, contractABI, provider);
+      const isEligible = await contract.isVerified(connectedAddress, file.RootCID);
+
+      if (isEligible) {
+        e.stopPropagation();
+        window.location.href = fileUrl;
+      } else {
+        alert("You are not eligible to download this file. Please purchase access first.");
+      }
+    } catch (error) {
+      console.error("Error checking eligibility:", error);
+      alert("Error checking download eligibility. Please try again.");
     }
   };
 
@@ -71,15 +102,13 @@ export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewP
             </div>
           )}
 
-          <a
-            href={fileUrl}
-            download={file.Name}
+          <button
+            onClick={handleDownload}
             className="btn bg-black hover:bg-gray-800 text-white border-2 border-black btn-sm"
             title="Download file"
-            onClick={e => e.stopPropagation()}
           >
             <ArrowDownTrayIcon className="h-4 w-4" />
-          </a>
+          </button>
         </div>
       </div>
 
