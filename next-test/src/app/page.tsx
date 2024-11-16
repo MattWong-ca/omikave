@@ -44,7 +44,15 @@ export default function Home() {
               {/* {new Date(webhook.timestamp).toLocaleString()} */}
             </div>
             <pre className="mt-2 bg-gray-100 p-2 rounded">
-              {JSON.stringify(webhook.data?.segments, null, 2)}
+              {webhook.data?.segments && Array.isArray(webhook.data.segments) ? 
+                webhook.data.segments.reduce((acc, segment, index, array) => {
+                  const prevSpeaker = index > 0 ? array[index - 1].speaker : null;
+                  const text = `${segment.speaker}: ${segment.text}`;
+                  
+                  return acc + (prevSpeaker === segment.speaker ? ' ' : '\n') + text;
+                }, '').trim()
+                : null
+              }
             </pre>
           </div>
         ))}
