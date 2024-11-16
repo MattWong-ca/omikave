@@ -79,7 +79,7 @@ export default function Home() {
                   const speakerSegments = segments
                     .filter((segment: { speaker: string }) => segment.speaker === speakerName)
                     .map((segment: { text: string }) => segment.text);
-                  
+                    console.log(speakerSegments)
                   return speakerSegments;
                 }
                 return [];
