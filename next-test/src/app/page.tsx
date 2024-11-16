@@ -35,7 +35,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="p-4" style={{ backgroundColor: '#0E76FD' }}>
       <h1 className="text-2xl font-bold mb-4">Webhook History</h1>
       <div className="space-y-4">
         {['SPEAKER_01', 'SPEAKER_02', 'SPEAKER_03'].map((speakerName) => (
