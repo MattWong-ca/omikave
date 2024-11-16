@@ -43,7 +43,7 @@ export default function Home() {
             <div className="font-bold text-sm text-gray-500">
               {speakerName}
             </div>
-            <pre className="mt-2 bg-gray-100 p-2 rounded">
+            <pre className="mt-2 bg-gray-100 p-2 rounded whitespace-pre-wrap break-words">
               {[...webhooks].reverse().flatMap(webhook => 
                 webhook.data?.segments && Array.isArray(webhook.data.segments) ?
                   webhook.data.segments
