@@ -1,5 +1,6 @@
 export async function POST(req) {
   try {
+    console.log("received")
     const data = await req.json();
     console.log("Webhook Data:", data);
 
