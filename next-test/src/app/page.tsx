@@ -35,11 +35,11 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="p-4" style={{ backgroundColor: '#0E76FD' }}>
-      <h1 className="text-2xl font-bold mb-4">Webhook History</h1>
+    <div className="p-8 min-h-screen" style={{ backgroundColor: '#0E76FD' }}>
+      <h1 className="text-4xl font-bold mb-4 text-center text-white">Omi Transcripts</h1>
       <div className="space-y-4">
         {['SPEAKER_01', 'SPEAKER_02', 'SPEAKER_03'].map((speakerName) => (
-          <div key={speakerName} className="border p-4 rounded shadow">
+          <div key={speakerName} className="border-2 border-black p-4 rounded-xl shadow bg-white">
             <div className="font-bold text-sm text-gray-500">
               {speakerName}
             </div>
