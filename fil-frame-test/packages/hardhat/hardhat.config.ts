@@ -87,6 +87,10 @@ const config: HardhatUserConfig = {
       url: `https://rpc-quicknode-holesky.morphl2.io`,
       accounts: [deployerPrivateKey],
       gasPrice: 1000000000,
+    },
+    'linea-sepolia': {
+      url: "https://rpc.sepolia.linea.build",
+      accounts: [deployerPrivateKey]
     }
   },
   // configuration for harhdat-verify plugin
