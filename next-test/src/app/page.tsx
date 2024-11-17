@@ -62,7 +62,7 @@ export default function Home() {
           onClick={handleScreenCapture}
           className="bg-white text-blue-600 px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition-colors"
         >
-          📸 Save Screenshot
+          📸 Save
         </button>
       </div>
       

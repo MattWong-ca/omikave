@@ -11,9 +11,10 @@ interface FilePreviewProps {
   bucketName: string;
   isOpen: boolean;
   onToggle: () => void;
+  isBuy: boolean;
 }
 
-export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewProps) => {
+export const FilePreview = ({ file, bucketName, isOpen, onToggle, isBuy }: FilePreviewProps) => {
   const { address: connectedAddress } = useAccount();
   const contractAddress = deployedContracts[78963].Gateway.address;
   const contractABI = deployedContracts[78963].Gateway.abi;
@@ -102,10 +103,10 @@ export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewP
       // Assuming the contract has a purchaseAccess function that requires payment
       const price = ethers.parseEther("0.25");
       const tx = await contract.payForAccess(connectedAddress, file.RootCID, { value: price });
-      
+
       // Wait for transaction to be mined
       await tx.wait();
-      
+
       alert("Successfully purchased access to the file!");
     } catch (error) {
       console.error("Error purchasing access:", error);
@@ -134,13 +135,16 @@ export const FilePreview = ({ file, bucketName, isOpen, onToggle }: FilePreviewP
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={handleBuy}
-            className="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-2 border-black btn-sm"
-            title="Buy file"
-          >
-            Buy
-          </button>
+          {
+            isBuy && (
+              <button
+                onClick={handleBuy}
+                className="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-2 border-black btn-sm"
+                title="Buy file"
+              >
+                Buy
+              </button>
+            )}
           <button
             onClick={handleShare}
             className="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-2 border-black btn-sm"

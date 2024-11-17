@@ -339,6 +339,7 @@ export default function BucketsPage() {
                             bucketName={bucket.Name}
                             isOpen={openFileIds.has(fileId)}
                             onToggle={() => handleFileToggle(bucket.Name, file)}
+                            isBuy={false}
                           />
                         );
                       })
