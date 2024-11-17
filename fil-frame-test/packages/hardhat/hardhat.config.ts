@@ -73,6 +73,21 @@ const config: HardhatUserConfig = {
       url: "https://node1-eu.ava.akave.ai/ext/bc/tLqcnkJkZ1DgyLyWmborZK9d7NmMj6YCzCFmf9d9oQEd2fHon/rpc",
       accounts: [deployerPrivateKey],
     },
+    flow: {
+      url: `https://testnet.evm.nodes.onflow.org`,
+      accounts: [deployerPrivateKey],
+      gasPrice: 1000000000,
+    },
+    polygon: {
+      url: `https://rpc-amoy.polygon.technology`,
+      accounts: [deployerPrivateKey],
+      gasPrice: 25000000000,
+    },
+    morph: {
+      url: `https://rpc-quicknode-holesky.morphl2.io`,
+      accounts: [deployerPrivateKey],
+      gasPrice: 1000000000,
+    }
   },
   // configuration for harhdat-verify plugin
   etherscan: {
